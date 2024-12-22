@@ -8,7 +8,7 @@
       <form @submit.prevent="submitForm" class="space-y-6">
         <div>
           <label for="title" class="block text-gray-700 font-medium"
-            >Task Title</label
+            >Task Title<span class="text-red-500">*</span></label
           >
           <input
             type="text"
@@ -27,7 +27,7 @@
         </div>
         <div>
           <label for="deadline" class="block text-gray-700 font-medium"
-            >Deadline</label
+            >Deadline<span class="text-red-500">*</span></label
           >
           <input
             type="date"
@@ -45,7 +45,7 @@
         </div>
         <div>
           <label for="priority" class="block text-gray-700 font-medium"
-            >Priority</label
+            >Priority<span class="text-red-500">*</span></label
           >
           <select
             id="priority"
@@ -74,7 +74,7 @@
           </button>
           <button
             type="submit"
-            class="w-full m-4 py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all duration-300"
+            class="w-full m-4 py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all duration-300 text-nowrap"
           >
             {{ isEdit ? "Edit Task" : "Create Task" }}
           </button>
