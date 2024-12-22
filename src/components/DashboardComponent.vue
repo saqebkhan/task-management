@@ -63,7 +63,6 @@ const fetchTasks = async () => {
     );
     const tasks = response.data;
     totalTasks.value = tasks.length;
-    // Filter tasks by stage
     pendingTasks.value = tasks.filter((task) => task.stage !== 3).length;
     doneTasks.value = tasks.filter((task) => task.stage === 3).length;
     if (totalTasks.value > 0) {
@@ -80,9 +79,3 @@ onMounted(() => {
   fetchTasks();
 });
 </script>
-
-<style scoped>
-input {
-  margin-right: 10px;
-}
-</style>

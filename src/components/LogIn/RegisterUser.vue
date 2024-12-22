@@ -6,7 +6,6 @@
     <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">
       Create an Account
     </h2>
-    <!-- Name input -->
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700">
         Name<span class="text-red-500">*</span>
@@ -20,7 +19,6 @@
       />
     </div>
 
-    <!-- Username input -->
     <div class="mb-4">
       <label for="username" class="block text-sm font-medium text-gray-700">
         Username<span class="text-red-500">*</span>
@@ -34,7 +32,6 @@
       />
     </div>
 
-    <!-- Email input -->
     <div class="mb-4">
       <label for="email" class="block text-sm font-medium text-gray-700">
         Email<span class="text-red-500">*</span>
@@ -48,7 +45,6 @@
       />
     </div>
 
-    <!-- Contact Number input -->
     <div class="mb-4">
       <label for="contactNumber" class="block text-sm font-medium text-gray-700">
         Contact Number<span class="text-red-500">*</span>
@@ -62,7 +58,6 @@
       />
     </div>
 
-    <!-- Password input -->
     <div class="mb-4">
       <label for="password" class="block text-sm font-medium text-gray-700">
         Password<span class="text-red-500">*</span>
@@ -76,7 +71,6 @@
       />
     </div>
 
-    <!-- Image Upload input -->
     <div class="mb-4">
       <label for="image" class="block text-sm font-medium text-gray-700">
         Profile Picture (Optional)
@@ -93,12 +87,10 @@
       </p>
     </div>
 
-    <!-- Error Message -->
     <p v-if="errorMessage" class="text-red-500 text-sm mt-2">
       {{ errorMessage }}
     </p>
 
-    <!-- Register Button -->
     <button
       @click="register"
       class="w-full mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50"
@@ -106,7 +98,6 @@
       Register
     </button>
 
-    <!-- Login Link -->
     <div class="mt-4 text-center">
       <span class="text-sm text-gray-600">Already have an account?</span>
       <router-link
@@ -132,17 +123,16 @@ const password = ref("");
 const name = ref("");
 const username = ref("");
 const contactNumber = ref("");
-const image = ref(null); // To store the selected file
-const imagePreview = ref(""); // To show image preview
+const image = ref(null);
+const imagePreview = ref("");
 
-// Function to handle image upload
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
   if (file && file.type.startsWith("image/")) {
     image.value = file;
     const reader = new FileReader();
     reader.onload = () => {
-      imagePreview.value = reader.result; // Set the preview
+      imagePreview.value = reader.result;
     };
     reader.readAsDataURL(file);
   } else {
@@ -150,7 +140,6 @@ const handleImageUpload = (event) => {
   }
 };
 
-// Register function
 const register = () => {
   if (contactNumber.value.length !== 10) {
     errorMessage.value = "Contact number should be 10 digits";

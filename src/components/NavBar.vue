@@ -7,20 +7,7 @@
         <div class="text-xl font-semibold">Task Manager</div>
         <div class="lg:hidden">
           <button @click="toggleMenu" class="text-white focus:outline-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+            <component :is="Bars3Icon" class="w-6 h-6" />
           </button>
         </div>
         <div class="hidden lg:flex space-x-6">
@@ -88,6 +75,7 @@ import { useRouter } from "vue-router";
 import { getAuth, signOut } from "firebase/auth";
 import { useStore } from "@/store";
 import { RouteNames } from "@/router";
+import { Bars3Icon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 const store = useStore();

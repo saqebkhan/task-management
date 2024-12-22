@@ -34,6 +34,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 - Login and Registration functionality for users, allowing them to securely access their personalized task dashboard.
 Users can register for a new account or log in to an existing one using Firebase Authentication.
+
+- Once the user is logged in the authentication information is stored into Firebase's getUser() method and the user is redirected to the dashboard
+
+- Users can only access the dashboard if they are authenticated, else they are redirected to the login page. 
+
+- A page is created of invalid url's if the given route is incorrect or does not exist.
+
 - Dashboard:
 
 - Provides an overview of the user’s tasks with important statistics such as the total number of pending and completed tasks, as well as a percentage completion.

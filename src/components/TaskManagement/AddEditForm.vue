@@ -7,14 +7,14 @@
 
       <form @submit.prevent="submitForm" class="space-y-6">
         <div>
-          <label for="title" class="block text-gray-700 font-medium"
-            >Task Title<span class="text-red-500">*</span></label
-          >
+          <label for="title" class="block text-gray-700 font-medium">
+            Task Title<span class="text-red-500">*</span>
+          </label>
           <input
             type="text"
             id="title"
             v-model="task.title"
-            class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all duration-300"
             placeholder="Enter task title"
             required
           />
@@ -26,14 +26,14 @@
           </p>
         </div>
         <div>
-          <label for="deadline" class="block text-gray-700 font-medium"
-            >Deadline<span class="text-red-500">*</span></label
-          >
+          <label for="deadline" class="block text-gray-700 font-medium">
+            Deadline<span class="text-red-500">*</span>
+          </label>
           <input
             type="date"
             id="deadline"
             v-model="task.deadline"
-            class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all duration-300"
             required
           />
           <p
@@ -44,13 +44,13 @@
           </p>
         </div>
         <div>
-          <label for="priority" class="block text-gray-700 font-medium"
-            >Priority<span class="text-red-500">*</span></label
-          >
+          <label for="priority" class="block text-gray-700 font-medium">
+            Priority<span class="text-red-500">*</span>
+          </label>
           <select
             id="priority"
             v-model="task.priority"
-            class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all duration-300"
             required
           >
             <option value="">Select Priority</option>
@@ -101,6 +101,7 @@ const task = ref({
 
 const formSubmitted = ref(false);
 const isEdit = ref(false);
+
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
@@ -192,22 +193,3 @@ const submitForm = async () => {
   }
 };
 </script>
-
-<style scoped>
-input,
-textarea,
-select {
-  transition: border-color 0.3s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #4f46e5;
-  outline: none;
-}
-
-button {
-  transition: background-color 0.3s ease;
-}
-</style>

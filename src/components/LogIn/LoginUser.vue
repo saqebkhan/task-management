@@ -1,23 +1,28 @@
 <template>
-  <div v-if="!store.isLoading">
-    <div class="text-center mb-6 mt-8">
-      <img
-        src="@/assets/logo.png"
-        alt="Task Manager Logo"
-        class="mx-auto h-16 w-auto mb-4"
-      />
-    </div>
+  <div v-if="!store.isLoading" class="bg-gray-100 min-h-screen">
     <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div class="flex justify-between">
+        <div class="text-center mb-6">
+          <img
+            src="@/assets/logo.png"
+            alt="Task Manager Logo"
+            class="mx-auto h-16 w-auto mb-4"
+          />
+        </div>
+        <h2 class="text-4xl font-semibold text-gray-900 mb-6 text-center p-4">
+          LogIn
+        </h2>
+      </div>
       <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-900 mb-1"
-          >Email<span class="text-red-500">*</span></label
-        >
+        <label for="email" class="block text-sm font-medium text-gray-900 mb-1">
+          Email<span class="text-red-500">*</span>
+        </label>
         <input
           id="email"
           type="email"
           v-model="email"
           placeholder="Email"
-          class="block w-full px-4 py-2 text-gray-900 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+          class="block w-full px-4 py-2 text-gray-900 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none transition-all duration-200"
         />
       </div>
 
@@ -25,14 +30,15 @@
         <label
           for="password"
           class="block text-sm font-medium text-gray-900 mb-1"
-          >Password<span class="text-red-500">*</span></label
         >
+          Password<span class="text-red-500">*</span>
+        </label>
         <input
           id="password"
           type="password"
           v-model="password"
           placeholder="Password"
-          class="block w-full px-4 py-2 text-gray-900 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+          class="block w-full px-4 py-2 text-gray-900 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none transition-all duration-200"
         />
       </div>
 
@@ -48,14 +54,14 @@
         <button
           :disabled="!showLogin"
           @click="login"
-          class="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 disabled:bg-gray-400"
+          class="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 disabled:bg-gray-400 transition-all duration-200"
         >
           Login
         </button>
 
         <button
           @click="router.push(RouteNames.REGISTER)"
-          class="py-2 px-4 bg-gray-200 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50"
+          class="py-2 px-4 bg-gray-200 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 transition-all duration-200"
         >
           Register
         </button>
@@ -120,34 +126,3 @@ const login = () => {
     });
 };
 </script>
-
-<style scoped>
-/* Custom Styling for Professional Look */
-body {
-  background-color: #f7fafc;
-  font-family: "Helvetica", "Arial", sans-serif;
-}
-
-h1 {
-  font-weight: 700;
-  color: #2d3748;
-}
-
-h2 {
-  font-size: 1.5rem;
-  color: #4a5568;
-}
-
-p {
-  color: #718096;
-}
-
-button {
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
-}
-</style>

@@ -77,6 +77,7 @@ import { useRouter } from "vue-router";
 import { RouteNames } from "@/router";
 import axios from "axios";
 import { useStore } from "@/store";
+import { formatDate, capitalizePriority } from "@/components/utils";
 
 const router = useRouter();
 
@@ -97,16 +98,6 @@ watch(
     task.value = { ...newTask };
   }
 );
-
-const formatDate = (dateString) => {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", options);
-};
-
-const capitalizePriority = (priority) => {
-  return priority.charAt(0).toUpperCase() + priority.slice(1);
-};
 
 const confirmDelete = (id) => {
   openDeleteDialog.value = true;
@@ -151,7 +142,6 @@ const close = () => {
 };
 
 const editTask = (id) => {
-  const router = useRouter();
   console.log("Editing task with id: ", id);
   router.push({
     name: RouteNames.ADD_EDIT_FORM,

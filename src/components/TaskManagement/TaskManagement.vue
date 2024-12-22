@@ -187,31 +187,26 @@ onMounted(() => {
 </script>
 
 <style scoped>
-input {
-  margin-right: 10px;
-}
-
-/* Custom scrollbar styling */
 ::-webkit-scrollbar {
-  width: 6px; /* Width of the scrollbar */
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Background color of the scrollbar track */
-  border-radius: 10px; /* Round the edges of the track */
+  background: #f1f1f1;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #b1c1ff; /* Color of the scrollbar thumb */
-  border-radius: 10px; /* Round the edges of the thumb */
-  border: 2px solid #f1f1f1; /* Add a border around the thumb */
+  background-color: #b1c1ff;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #3b5bdb; /* Change color of the thumb when hovered */
+  background-color: #3b5bdb;
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background-color: #2d46b9; /* Darker color when the thumb is active (clicked) */
+  background-color: #2d46b9;
 }
 </style>
