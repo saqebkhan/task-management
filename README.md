@@ -79,7 +79,6 @@ Elegant User Interface:
 5. Prettier: Used for code formatting to maintain clean and consistent code style throughout the project.
 
 
-
 ### Backend
 1. Node.js: Used to run the backend server, handling API requests and interactions with MongoDB.
 
@@ -90,12 +89,10 @@ Elegant User Interface:
 4. Vercel: Deployed the backend server on Vercel for easy deployment and scalability.
 
 
-
 ### UI and Styling
 1. Tailwind CSS: A utility-first CSS framework used for styling the application. Tailwind allows for fast and responsive design development without writing custom CSS rules.
 
 2. Headless Heroicons: A set of free, MIT-licensed high-quality icons, used throughout the project for a clean and modern UI.
-
 
 
 ### State Management and Routing
@@ -104,21 +101,16 @@ Elegant User Interface:
 2. Vue Router: Manages routing and navigation within the Vue.js application, enabling single-page navigation and dynamic route handling.
 
 
-
 ### Utility Libraries
 1. Axios: Used for making API calls to the backend, enabling communication between the frontend and backend services.
-
 
 
 ### Key Features
 1. Reusable Components: The project uses a component-based architecture with reusable components (like loading spinners, toast messages, dialog modals, etc.) to ensure code reusability and maintainability.
 
-
-
 2. Consistent Design: Throughout the project, a consistent design language is maintained, leveraging Tailwind CSS for styling and reusable components for UI consistency.
 
 3. Dynamic and Consistent Route Names: Routes are named dynamically to avoid future naming conflicts and hardcoded values, ensuring better maintainability and scalability.
-
 
 
 ### Best Practices and Guidelines
@@ -133,5 +125,4 @@ Elegant User Interface:
 5. Dynamically Use Route Names: Always use RouteNames dynamically instead of hardcoding paths to ensure consistency and avoid name conflicts in the future.
 
 6. Reusable Components and Utilities: Where possible, create reusable components and utilities (such as functions for data formatting, API calls, etc.) to reduce code duplication and improve maintainability.
-
 
