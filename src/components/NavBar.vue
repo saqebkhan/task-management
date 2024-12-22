@@ -5,7 +5,25 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-4">
         <div class="text-xl font-semibold">Task Manager</div>
-        <div class="flex space-x-6">
+        <div class="lg:hidden">
+          <button @click="toggleMenu" class="text-white focus:outline-none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="hidden lg:flex space-x-6">
           <router-link
             :to="{ name: RouteNames.DASHBOARD }"
             class="hover:text-indigo-200 transition-all duration-300"
@@ -31,15 +49,41 @@
         </button>
       </div>
     </div>
+    <div
+      v-show="menuOpen"
+      class="lg:hidden bg-indigo-600 text-white absolute top-16 left-0 w-full py-4 px-6"
+    >
+      <router-link
+        :to="{ name: RouteNames.DASHBOARD }"
+        class="block mb-4 hover:text-indigo-200 transition-all duration-300"
+        :class="{ 'text-indigo-200': $route.name === RouteNames.DASHBOARD }"
+        @click="toggleMenu"
+      >
+        Dashboard
+      </router-link>
+      <router-link
+        :to="{ name: RouteNames.TASK_MANAGEMENT }"
+        class="block mb-4 hover:text-indigo-200 transition-all duration-300"
+        :class="{
+          'text-indigo-200': $route.name === RouteNames.TASK_MANAGEMENT,
+        }"
+        @click="toggleMenu"
+      >
+        Task Management
+      </router-link>
+      <button
+        @click="logout"
+        class="w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300"
+      >
+        Logout
+      </button>
+    </div>
   </nav>
-
-  <!-- Main content, add padding top to avoid overlap with navbar -->
-  <div class="pt-16">
-    <!-- Your page content goes here -->
-  </div>
+  <div class="pt-16"></div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signOut } from "firebase/auth";
 import { useStore } from "@/store";
@@ -47,11 +91,16 @@ import { RouteNames } from "@/router";
 
 const router = useRouter();
 const store = useStore();
+const menuOpen = ref(false);
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value;
+};
 
 const logout = async () => {
   try {
-    await signOut(getAuth());
     store.isLoading = true;
+    await signOut(getAuth());
     store.isAuthenticated = false;
     store.toast = {
       message: "Successfully logged out",
@@ -70,20 +119,3 @@ const logout = async () => {
   }
 };
 </script>
-
-<style scoped>
-nav {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 50;
-}
-
-/* Ensure content does not overlap with navbar */
-.pt-20 {
-  padding-top: 5rem; /* Adjust to the height of your navbar */
-}
-
-a:hover,
-button:hover {
-  transition: all 0.3s ease;
-}
-</style>

@@ -1,12 +1,16 @@
 <template>
   <div v-if="!store.isLoading">
-    <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center pt-6">
-      Log In
-    </h2>
+    <div class="text-center mb-6 mt-8">
+      <img
+        src="@/assets/logo.png"
+        alt="Task Manager Logo"
+        class="mx-auto h-16 w-auto mb-4"
+      />
+    </div>
     <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
       <div class="mb-4">
         <label for="email" class="block text-sm font-medium text-gray-900 mb-1"
-          >Email</label
+          >Email<span class="text-red-500">*</span></label
         >
         <input
           id="email"
@@ -21,7 +25,7 @@
         <label
           for="password"
           class="block text-sm font-medium text-gray-900 mb-1"
-          >Password</label
+          >Password<span class="text-red-500">*</span></label
         >
         <input
           id="password"
@@ -40,19 +44,18 @@
         {{ errorMessage }}
       </div>
 
-      <!-- Login and Register Buttons -->
-      <div class="flex justify-between items-center">
+      <div class="flex flex-col space-y-4">
         <button
           :disabled="!showLogin"
           @click="login"
-          class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 disabled:bg-gray-400"
+          class="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 disabled:bg-gray-400"
         >
           Login
         </button>
 
         <button
           @click="router.push(RouteNames.REGISTER)"
-          class="w-full py-2 px-4 bg-gray-200 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 ml-2"
+          class="py-2 px-4 bg-gray-200 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50"
         >
           Register
         </button>
@@ -117,3 +120,34 @@ const login = () => {
     });
 };
 </script>
+
+<style scoped>
+/* Custom Styling for Professional Look */
+body {
+  background-color: #f7fafc;
+  font-family: "Helvetica", "Arial", sans-serif;
+}
+
+h1 {
+  font-weight: 700;
+  color: #2d3748;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #4a5568;
+}
+
+p {
+  color: #718096;
+}
+
+button {
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+}
+</style>

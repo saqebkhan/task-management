@@ -8,29 +8,30 @@
     @closeDialog="close"
     @action="deleteTask"
   />
-  <p class="font-medium text-gray-800 text-lg mb-2">{{ props.task.title }}</p>
+
+  <p class="font-medium text-gray-800 text-lg mb-2">{{ task.title }}</p>
 
   <div class="flex justify-between items-center space-x-4 mb-2">
     <span
       :class="{
-        'bg-green-100 text-green-800': props.task.priority === 'low',
-        'bg-yellow-100 text-yellow-800': props.task.priority === 'medium',
-        'bg-red-100 text-red-800': props.task.priority === 'high',
+        'bg-green-100 text-green-800': task.priority === 'low',
+        'bg-yellow-100 text-yellow-800': task.priority === 'medium',
+        'bg-red-100 text-red-800': task.priority === 'high',
       }"
       class="px-3 py-1 text-xs font-medium rounded-full"
     >
-      {{ capitalizePriority(props.task.priority) }}
+      {{ capitalizePriority(task.priority) }}
     </span>
 
     <div class="flex space-x-2">
       <button
-        @click="editTask(props.task._id)"
+        @click="editTask(task._id)"
         class="text-blue-500 hover:text-blue-600"
       >
         <PencilIcon class="w-5 h-5" />
       </button>
       <button
-        @click="confirmDelete(props.task._id)"
+        @click="confirmDelete(task._id)"
         class="text-red-500 hover:text-red-600"
       >
         <TrashIcon class="w-5 h-5" />
@@ -38,30 +39,64 @@
     </div>
   </div>
 
-  <p class="text-sm text-gray-600">
-    Due: {{ formatDate(props.task.deadline) }}
-  </p>
+  <p class="text-sm text-gray-600">Due: {{ formatDate(task.deadline) }}</p>
+
+  <div class="flex justify-between items-center mt-4">
+    <button
+      :disabled="task.stage === 0"
+      @click="updateStage(-1)"
+      class="flex items-center justify-center w-10 h-10 rounded-full border border-indigo-600 bg-white text-indigo-600 hover:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+    >
+      <ChevronLeftIcon class="w-5 h-5" />
+    </button>
+
+    <span class="text-sm font-medium text-gray-700"
+      >Stage: {{ task.stage }}</span
+    >
+
+    <button
+      :disabled="task.stage === 3"
+      @click="updateStage(1)"
+      class="flex items-center justify-center w-10 h-10 rounded-full border border-indigo-600 bg-white text-indigo-600 hover:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+    >
+      <ChevronRightIcon class="w-5 h-5" />
+    </button>
+  </div>
 </template>
 
 <script setup>
-import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
-import { defineProps } from "vue";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/vue/24/outline";
+import { defineProps, ref, watch, defineEmits } from "vue";
 import ConfirmPopup from "@/components/common/ConfirmPopup.vue";
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { RouteNames } from "@/router";
 import axios from "axios";
 import { useStore } from "@/store";
 
 const router = useRouter();
-const store = useStore();
 
 const props = defineProps({
   task: Object,
 });
 
+const emit = defineEmits(["updateStage"]);
+
+const task = ref({ ...props.task });
+
 const openDeleteDialog = ref(false);
 const deletingId = ref("");
+
+watch(
+  () => props.task,
+  (newTask) => {
+    task.value = { ...newTask };
+  }
+);
 
 const formatDate = (dateString) => {
   const options = { year: "numeric", month: "long", day: "numeric" };
@@ -80,8 +115,13 @@ const confirmDelete = (id) => {
 
 const deleteTask = () => {
   console.log("Deleting task with id: ", deletingId.value);
+  const store = useStore();
+  store.isLoading = true;
   axios
-    .delete("https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks/" + deletingId.value)
+    .delete(
+      "https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks/" +
+        deletingId.value
+    )
     .then(() => {
       close();
       router.go();
@@ -98,6 +138,9 @@ const deleteTask = () => {
         type: "error",
         isVisible: true,
       };
+    })
+    .finally(() => {
+      store.isLoading = false;
     });
   close();
 };
@@ -108,16 +151,44 @@ const close = () => {
 };
 
 const editTask = (id) => {
+  const router = useRouter();
   console.log("Editing task with id: ", id);
   router.push({
     name: RouteNames.ADD_EDIT_FORM,
     query: { param: "edit", id: id },
   });
 };
-</script>
 
-<style scoped>
-span {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-</style>
+const updateStage = async (increment) => {
+  const newStage = task.value.stage + increment;
+  if (newStage >= 0 && newStage <= 3) {
+    await axios
+      .put(
+        `https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks/${task.value._id}`,
+        {
+          stage: newStage,
+        }
+      )
+      .then(() => {
+        task.value.stage = newStage;
+        const store = useStore();
+        store.toast = {
+          message: "Task Successfully updated.",
+          type: "success",
+          isVisible: true,
+        };
+
+        emit("updateStage", { taskId: task.value._id, newStage });
+      })
+      .catch((error) => {
+        console.error("Error updating task stage:", error);
+        const store = useStore();
+        store.toast = {
+          message: "Error updating task stage",
+          type: "error",
+          isVisible: true,
+        };
+      });
+  }
+};
+</script>

@@ -31,7 +31,7 @@
             :draggable="true"
             @dragstart="onDragStart($event, task, 0)"
           >
-            <TaskComponent :task="task" />
+            <TaskComponent :task="task" @updateStage="handleUpdateStage" />
           </div>
         </div>
 
@@ -52,7 +52,7 @@
             :draggable="true"
             @dragstart="onDragStart($event, task, 1)"
           >
-            <TaskComponent :task="task" />
+            <TaskComponent :task="task" @updateStage="handleUpdateStage" />
           </div>
         </div>
         <div
@@ -72,7 +72,7 @@
             :draggable="true"
             @dragstart="onDragStart($event, task, 2)"
           >
-            <TaskComponent :task="task" />
+            <TaskComponent :task="task" @updateStage="handleUpdateStage" />
           </div>
         </div>
         <div
@@ -92,7 +92,7 @@
             :draggable="true"
             @dragstart="onDragStart($event, task, 3)"
           >
-            <TaskComponent :task="task" />
+            <TaskComponent :task="task" @updateStage="handleUpdateStage" />
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@ const fetchTasks = async () => {
     store.isLoading = true;
     const response = await axios.get(
       "https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks"
-    ); // Replace with your actual API endpoint
+    );
     store.isLoading = true;
     const tasks = response.data;
     backlogTasks.value = tasks.filter((task) => task.stage === 0);
@@ -175,6 +175,10 @@ const onDrop = async (event, newStage) => {
 
 const createTask = () => {
   router.push({ name: RouteNames.ADD_EDIT_FORM });
+};
+
+const handleUpdateStage = () => {
+  fetchTasks();
 };
 
 onMounted(() => {
