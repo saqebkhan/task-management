@@ -11,6 +11,11 @@ export const formatDate = (dateString) => {
   return date.toLocaleDateString("en-US", options);
 };
 
+/**
+ * Capitalizes the first letter of a given priority string.
+ * @param {string} priority - The priority string to capitalize.
+ * @returns {string} The capitalized priority string.
+ */
 export const capitalizePriority = (priority) => {
   return priority.charAt(0).toUpperCase() + priority.slice(1);
 };

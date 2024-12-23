@@ -72,12 +72,13 @@
 
 <script setup>
 import CaptchaCheck from "./CaptchaCheck.vue";
-import { RouteNames } from "@/router.js";
+import { RouteNames } from "@/components/enums/routeNames";
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useStore } from "@/store";
 
 import { ref } from "vue";
+import { toastTypes } from "../enums/toastTypes";
 const email = ref("");
 const password = ref("");
 const errorMessage = ref("");
@@ -94,10 +95,10 @@ const login = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
     .then(() => {
       store.isAuthenticated = true;
-      router.push(RouteNames.DASHBOARD);
+      router.push({ name: RouteNames.DASHBOARD });
       store.toast = {
         message: "Successfully logged in",
-        type: "success",
+        type: toastTypes.SUCCESS,
         isVisible: true,
       };
     })

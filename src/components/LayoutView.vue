@@ -12,7 +12,7 @@ import ToastComponent from "./common/ToastComponent.vue";
 import LoadingSpinner from "./common/LoadingSpinner.vue";
 import NavBar from "./NavBar.vue";
 import { useRouter, useRoute } from "vue-router";
-import { RouteNames } from "@/router";
+import { RouteNames } from "@/components/enums/routeNames";
 
 const store = useStore();
 const router = useRouter();

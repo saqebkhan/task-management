@@ -47,6 +47,7 @@
 import { useStore } from "@/store";
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import apiConfig from "./apiConfig";
 
 const store = useStore();
 
@@ -58,13 +59,20 @@ const progressPercentage = ref(0);
 const fetchTasks = async () => {
   try {
     store.isLoading = true;
-    const response = await axios.get(
-      "https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks"
-    );
-    const tasks = response.data;
+    const response = await axios.get(apiConfig.baseURL + "/tasks");
+    const result = response.data;
+    const tasks = result.filter((task) => task.userId === store.userId);
     totalTasks.value = tasks.length;
-    pendingTasks.value = tasks.filter((task) => task.stage !== 3).length;
-    doneTasks.value = tasks.filter((task) => task.stage === 3).length;
+    pendingTasks.value = 0;
+    doneTasks.value = 0;
+
+    tasks.forEach((task) => {
+      if (task.stage === 3) {
+        doneTasks.value++;
+      } else {
+        pendingTasks.value++;
+      }
+    });
     if (totalTasks.value > 0) {
       progressPercentage.value = (doneTasks.value / totalTasks.value) * 100;
     }

@@ -8,15 +8,8 @@ import TaskManagement from "@/components/TaskManagement/TaskManagement.vue";
 import AddEditForm from "@/components/TaskManagement/AddEditForm.vue";
 import NotFound from "@/components/common/NotFound.vue";
 import NoAccess from "@/components/common/NoAccess.vue";
-
-const RouteNames = {
-  DASHBOARD: "Dashboard",
-  ADD_EDIT_FORM: "AddEditForm",
-  LOGIN: "Login",
-  NO_ACCESS: "NoAccess",
-  REGISTER: "Register",
-  TASK_MANAGEMENT: "TaskManagement",
-};
+import { RouteNames } from "@/components/enums/routeNames";
+import { toastTypes } from "@/components/enums/toastTypes";
 
 const routes = [
   {
@@ -56,7 +49,12 @@ router.beforeEach(async (to, from, next) => {
       store.isAuthenticated = true;
       next();
     } else {
-      next({ name: RouteNames.NO_ACCESS });
+      store.toast = {
+        message: "Login or register to access the page.",
+        type: toastTypes.ERROR,
+        isVisible: true,
+      };
+      next({ name: RouteNames.LOGIN });
     }
   } else {
     next();

@@ -74,8 +74,9 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signOut } from "firebase/auth";
 import { useStore } from "@/store";
-import { RouteNames } from "@/router";
+import { RouteNames } from "@/components/enums/routeNames";
 import { Bars3Icon } from "@heroicons/vue/24/outline";
+import { toastTypes } from "./enums/toastTypes";
 
 const router = useRouter();
 const store = useStore();
@@ -92,14 +93,14 @@ const logout = async () => {
     store.isAuthenticated = false;
     store.toast = {
       message: "Successfully logged out",
-      type: "success",
+      type: toastTypes.SUCCESS,
       isVisible: true,
     };
     router.push({ name: RouteNames.LOGIN });
   } catch (error) {
     store.toast = {
       message: error.message,
-      type: "error",
+      type: toastTypes.ERROR,
       isVisible: true,
     };
   } finally {

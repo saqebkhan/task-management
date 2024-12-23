@@ -16,15 +16,13 @@
             v-model="task.title"
             class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all duration-300"
             placeholder="Enter task title"
-            required
+            :class="{ 'border-red-500': titleError }"
           />
-          <p
-            v-if="!task.title && formSubmitted"
-            class="text-red-600 text-sm mt-1"
-          >
+          <p v-if="titleError" class="text-red-600 text-sm mt-1">
             Title is required
           </p>
         </div>
+
         <div>
           <label for="deadline" class="block text-gray-700 font-medium">
             Deadline<span class="text-red-500">*</span>
@@ -33,16 +31,15 @@
             type="date"
             id="deadline"
             v-model="task.deadline"
+            :min="todayDate"
             class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all duration-300"
-            required
+            :class="{ 'border-red-500': deadlineError }"
           />
-          <p
-            v-if="!task.deadline && formSubmitted"
-            class="text-red-600 text-sm mt-1"
-          >
+          <p v-if="deadlineError" class="text-red-600 text-sm mt-1">
             Deadline is required
           </p>
         </div>
+
         <div>
           <label for="priority" class="block text-gray-700 font-medium">
             Priority<span class="text-red-500">*</span>
@@ -51,20 +48,18 @@
             id="priority"
             v-model="task.priority"
             class="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all duration-300"
-            required
+            :class="{ 'border-red-500': priorityError }"
           >
             <option value="">Select Priority</option>
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
           </select>
-          <p
-            v-if="!task.priority && formSubmitted"
-            class="text-red-600 text-sm mt-1"
-          >
+          <p v-if="priorityError" class="text-red-600 text-sm mt-1">
             Priority is required
           </p>
         </div>
+
         <div class="flex m-2">
           <button
             @click="$router.push({ name: RouteNames.TASK_MANAGEMENT })"
@@ -88,10 +83,15 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
-import { RouteNames } from "@/router";
+import { RouteNames } from "@/components/enums/routeNames";
 import { useStore } from "@/store";
+import { toastTypes } from "../enums/toastTypes";
+import apiConfig from "../apiConfig";
+
+const todayDate = new Date().toISOString().split("T")[0];
 
 const task = ref({
+  userId: "",
   title: "",
   description: "",
   deadline: "",
@@ -106,6 +106,10 @@ const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
+const titleError = ref(false);
+const deadlineError = ref(false);
+const priorityError = ref(false);
+
 onMounted(() => {
   if (route.query.param === "edit") {
     isEdit.value = true;
@@ -118,14 +122,12 @@ const loadTaskData = async () => {
 
   try {
     store.isLoading = true;
-    const response = await axios.get(
-      `https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks/${taskId}`
-    );
+    const response = await axios.get(apiConfig.baseURL + `/tasks/${taskId}`);
     task.value = response.data;
   } catch (error) {
     store.toast = {
       message: "Error fetching task details.",
-      type: "error",
+      type: toastTypes.ERROR,
       isVisible: true,
     };
   } finally {
@@ -135,7 +137,11 @@ const loadTaskData = async () => {
 
 const validateForm = () => {
   formSubmitted.value = true;
-  return task.value.title && task.value.deadline && task.value.priority;
+  titleError.value = !task.value.title;
+  deadlineError.value = !task.value.deadline;
+  priorityError.value = !task.value.priority;
+
+  return !titleError.value && !deadlineError.value && !priorityError.value;
 };
 
 const submitForm = async () => {
@@ -145,6 +151,7 @@ const submitForm = async () => {
     store.isLoading = true;
     let response;
     const taskData = {
+      userId: store.userId,
       title: task.value.title,
       description: task.value.description,
       deadline: task.value.deadline,
@@ -155,14 +162,11 @@ const submitForm = async () => {
     if (isEdit.value) {
       const taskId = route.query.id;
       response = await axios.put(
-        `https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks/${taskId}`,
+        apiConfig.baseURL + `/tasks/${taskId}`,
         taskData
       );
     } else {
-      response = await axios.post(
-        "https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks",
-        taskData
-      );
+      response = await axios.post(apiConfig.baseURL + "/tasks", taskData);
     }
 
     if (response.status === 200 || response.status === 201) {
@@ -170,21 +174,17 @@ const submitForm = async () => {
         message: isEdit.value
           ? "Task updated successfully!"
           : "Task created successfully!",
-        type: "success",
+        type: toastTypes.SUCCESS,
         isVisible: true,
       };
-
-      setTimeout(() => {
-        router.push({ name: RouteNames.TASK_MANAGEMENT });
-      }, 1500);
+      router.push({ name: RouteNames.TASK_MANAGEMENT });
     }
   } catch (error) {
-    console.log(error);
     store.toast = {
       message: isEdit.value
         ? "Error updating task." + error.response.data.message
         : "Error creating task." + error.response.data.message,
-      type: "error",
+      type: toastTypes.ERROR,
       isVisible: true,
     };
     console.error(error);

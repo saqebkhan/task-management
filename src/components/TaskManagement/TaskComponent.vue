@@ -74,10 +74,12 @@ import {
 import { defineProps, ref, watch, defineEmits } from "vue";
 import ConfirmPopup from "@/components/common/ConfirmPopup.vue";
 import { useRouter } from "vue-router";
-import { RouteNames } from "@/router";
+import { RouteNames } from "@/components/enums/routeNames";
 import axios from "axios";
 import { useStore } from "@/store";
 import { formatDate, capitalizePriority } from "@/components/utils";
+import { toastTypes } from "../enums/toastTypes";
+import apiConfig from "../apiConfig";
 
 const router = useRouter();
 
@@ -85,7 +87,7 @@ const props = defineProps({
   task: Object,
 });
 
-const emit = defineEmits(["updateStage"]);
+const emit = defineEmits(["updateStage", "deleteTask"]);
 
 const task = ref({ ...props.task });
 
@@ -105,20 +107,15 @@ const confirmDelete = (id) => {
 };
 
 const deleteTask = () => {
-  console.log("Deleting task with id: ", deletingId.value);
   const store = useStore();
-  store.isLoading = true;
+  emit("deleteTask", { id: deletingId.value });
   axios
-    .delete(
-      "https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks/" +
-        deletingId.value
-    )
+    .delete(apiConfig.baseURL + "/tasks/" + deletingId.value)
     .then(() => {
       close();
-      router.go();
       store.toast = {
         message: "Task deleted successfully",
-        type: "success",
+        type: toastTypes.SUCCESS,
         isVisible: true,
       };
     })
@@ -126,12 +123,9 @@ const deleteTask = () => {
       console.error("Error deleting task: ", error);
       store.toast = {
         message: "Error deleting task",
-        type: "error",
+        type: toastTypes.ERROR,
         isVisible: true,
       };
-    })
-    .finally(() => {
-      store.isLoading = false;
     });
   close();
 };
@@ -142,7 +136,6 @@ const close = () => {
 };
 
 const editTask = (id) => {
-  console.log("Editing task with id: ", id);
   router.push({
     name: RouteNames.ADD_EDIT_FORM,
     query: { param: "edit", id: id },
@@ -151,34 +144,34 @@ const editTask = (id) => {
 
 const updateStage = async (increment) => {
   const newStage = task.value.stage + increment;
-  if (newStage >= 0 && newStage <= 3) {
-    await axios
-      .put(
-        `https://admin-app-d7o3iig0l-saqebkhans-projects.vercel.app/tasks/${task.value._id}`,
-        {
-          stage: newStage,
-        }
-      )
-      .then(() => {
-        task.value.stage = newStage;
-        const store = useStore();
-        store.toast = {
-          message: "Task Successfully updated.",
-          type: "success",
-          isVisible: true,
-        };
+  const oldStage = task.value.stage;
+  await axios
+    .put(apiConfig.baseURL + `/tasks/${task.value._id}`, {
+      stage: newStage,
+    })
+    .then(() => {
+      task.value.stage = newStage;
+      const store = useStore();
+      store.toast = {
+        message: "Task Successfully updated.",
+        type: toastTypes.SUCCESS,
+        isVisible: true,
+      };
 
-        emit("updateStage", { taskId: task.value._id, newStage });
-      })
-      .catch((error) => {
-        console.error("Error updating task stage:", error);
-        const store = useStore();
-        store.toast = {
-          message: "Error updating task stage",
-          type: "error",
-          isVisible: true,
-        };
+      emit("updateStage", {
+        taskId: task.value._id,
+        newStage,
+        oldStage: oldStage,
       });
-  }
+    })
+    .catch((error) => {
+      console.error("Error updating task stage:", error);
+      const store = useStore();
+      store.toast = {
+        message: "Error updating task stage",
+        type: toastTypes.ERROR,
+        isVisible: true,
+      };
+    });
 };
 </script>

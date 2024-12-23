@@ -6,7 +6,7 @@ export const useStore = defineStore({
   state: () => ({
     isAuthenticated: false,
     isLoading: false,
-    tasksFetched: false,
+    userId: null,
     toast: {
       message: "",
       type: "",
@@ -21,6 +21,7 @@ export const useStore = defineStore({
           (user) => {
             unsubscribe();
             resolve(user);
+            this.userId = user.uid;
           },
           reject
         );
@@ -28,6 +29,7 @@ export const useStore = defineStore({
     },
     async setAuthenticationState() {
       const user = await this.getCurrentUser();
+      this.userId = user.uid;
       this.isAuthenticated = user !== null;
       return this.isAuthenticated;
     },
