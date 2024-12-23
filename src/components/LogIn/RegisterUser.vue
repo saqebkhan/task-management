@@ -195,6 +195,7 @@ const register = () => {
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
     .then((userCredential) => {
       const user = userCredential.user;
+      console.log(user, "Successfully registered");
       router.push({ name: RouteNames.LOGIN });
       store.toast = {
         isVisible: true,
@@ -204,6 +205,7 @@ const register = () => {
     })
     .catch((error) => {
       errorMessage.value = error.message;
+      console.log(error.code, error.message, "ERROR");
     })
     .finally(() => {
       store.isLoading = false;
