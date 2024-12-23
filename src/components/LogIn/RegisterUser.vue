@@ -47,7 +47,7 @@
 
     <div class="mb-4">
       <label for="contactNumber" class="block text-sm font-medium text-gray-700">
-        Contact Number<span class="text-red-500">*</span>
+        Contact Number
       </label>
       <input
         type="text"
@@ -141,10 +141,6 @@ const handleImageUpload = (event) => {
 };
 
 const register = () => {
-  if (contactNumber.value.length !== 10) {
-    errorMessage.value = "Contact number should be 10 digits";
-    return;
-  }
   if (password.value.length < 6) {
     errorMessage.value = "Password should be at least 6 characters";
     return;
