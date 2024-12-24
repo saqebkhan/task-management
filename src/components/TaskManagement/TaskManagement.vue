@@ -291,7 +291,7 @@ const onDrop = async (event, newStage) => {
         (task) => task._id !== draggedTask._id
       );
     }
-
+    isDragging.value = false;
     try {
       await axios.put(
         apiConfig.baseURL + `/tasks/${draggedTask._id}`,
@@ -306,7 +306,6 @@ const onDrop = async (event, newStage) => {
       console.error("Error updating task stage:", error);
     }
   }
-  isDragging.value = false;
   draggedTask = null;
 };
 
