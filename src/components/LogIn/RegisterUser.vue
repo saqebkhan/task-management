@@ -125,7 +125,7 @@
     <div class="mt-4 text-center">
       <span class="text-sm text-gray-600">Already have an account?</span>
       <router-link
-        :to="{ name: RouteNames.LOGIN }"
+        :to="{ name: ROUTE_NAMES.LOGIN }"
         class="text-indigo-600 hover:underline"
         >Login here</router-link
       >
@@ -135,11 +135,14 @@
 
 <script setup>
 import { ref } from "vue";
-import { RouteNames } from "@/components/enums/routeNames";
+import { ROUTE_NAMES, TOAST_TYPES } from "@/components/utils/constant";
 import { useRouter } from "vue-router";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { useStore } from "@/store";
-import { toastTypes } from "../enums/toastTypes";
 
 const store = useStore();
 const router = useRouter();
@@ -195,13 +198,21 @@ const register = () => {
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
     .then((userCredential) => {
       const user = userCredential.user;
-      console.log(user, "Successfully registered");
-      router.push({ name: RouteNames.LOGIN });
-      store.toast = {
-        isVisible: true,
-        message: "Successfully registered",
-        type: toastTypes.SUCCESS,
-      };
+      updateProfile(user, {
+        displayName: name.value,
+      })
+        .then(() => {
+          router.push({ name: ROUTE_NAMES.LOGIN });
+          store.toast = {
+            isVisible: true,
+            message: "Successfully registered",
+            type: TOAST_TYPES.SUCCESS,
+          };
+        })
+        .catch((error) => {
+          errorMessage.value = error.message;
+          console.log(error.code, error.message, "Error setting display name");
+        });
     })
     .catch((error) => {
       errorMessage.value = error.message;

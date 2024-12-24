@@ -7,13 +7,13 @@
     <div
       class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg"
       :class="
-        store.toast.type === toastTypes.SUCCESS
+        store.toast.type === TOAST_TYPES.SUCCESS
           ? 'bg-green-100 text-green-500'
           : 'bg-red-100 text-red-500'
       "
     >
       <component
-        v-if="store.toast.type === toastTypes.SUCCESS"
+        v-if="store.toast.type === TOAST_TYPES.SUCCESS"
         :is="CheckCircleIcon"
         class="w-5 h-5"
       />
@@ -41,8 +41,7 @@ import {
   XCircleIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
-import { toastTypes } from "../enums/toastTypes";
-const store = useStore();
+import { TOAST_TYPES } from "@/components/utils/constant";const store = useStore();
 
 store.toast.isVisible = true;
 

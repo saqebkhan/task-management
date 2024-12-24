@@ -139,8 +139,7 @@ import axios from "axios";
 import TaskComponent from "./TaskComponent.vue";
 import { useStore } from "@/store";
 import { useRouter } from "vue-router";
-import { RouteNames } from "@/components/enums/routeNames";
-import { toastTypes } from "../enums/toastTypes";
+import { ROUTE_NAMES, TOAST_TYPES } from "@/components/utils/constant";
 import apiConfig from "../apiConfig";
 import ConfirmPopup from "@/components/common/ConfirmPopup.vue";
 import { TrashIcon } from "@heroicons/vue/24/outline";
@@ -218,7 +217,7 @@ const deleteTask = async (id) => {
     await axios.delete(apiConfig.baseURL + "/tasks/" + deletingId.value);
     store.toast = {
       message: "Task deleted successfully",
-      type: toastTypes.SUCCESS,
+      type: TOAST_TYPES.SUCCESS,
       isVisible: true,
     };
     deleteFromList(deletingId.value);
@@ -226,7 +225,7 @@ const deleteTask = async (id) => {
     console.error("Error deleting task:", error);
     store.toast = {
       message: "Error deleting task",
-      type: toastTypes.ERROR,
+      type: TOAST_TYPES.ERROR,
       isVisible: true,
     };
   } finally {
@@ -299,7 +298,7 @@ const onDrop = async (event, newStage) => {
       );
       store.toast = {
         message: "Task stage updated successfully",
-        type: toastTypes.SUCCESS,
+        type: TOAST_TYPES.SUCCESS,
         isVisible: true,
       };
     } catch (error) {
@@ -310,7 +309,7 @@ const onDrop = async (event, newStage) => {
 };
 
 const createTask = () => {
-  router.push({ name: RouteNames.ADD_EDIT_FORM });
+  router.push({ name: ROUTE_NAMES.ADD_EDIT_FORM });
 };
 
 const handleUpdateStage = (event) => {

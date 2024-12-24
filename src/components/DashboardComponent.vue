@@ -34,8 +34,7 @@
             :style="{ width: progressPercentage + '%' }"
           ></div>
         </div>
-        <div class="flex justify-between text-sm mt-2 text-gray-600">
-          <span>Pending</span>
+        <div class="flex justify-end text-sm mt-2 text-gray-600">
           <span>Done</span>
         </div>
       </div>

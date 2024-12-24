@@ -74,11 +74,10 @@ import {
 import { defineProps, ref, watch, defineEmits } from "vue";
 import ConfirmPopup from "@/components/common/ConfirmPopup.vue";
 import { useRouter } from "vue-router";
-import { RouteNames } from "@/components/enums/routeNames";
 import axios from "axios";
 import { useStore } from "@/store";
-import { formatDate, capitalizePriority } from "@/components/utils";
-import { toastTypes } from "../enums/toastTypes";
+import { formatDate, capitalizePriority } from "@/components/utils/utils";
+import { ROUTE_NAMES, TOAST_TYPES } from "@/components/utils/constant";
 import apiConfig from "../apiConfig";
 
 const router = useRouter();
@@ -115,7 +114,7 @@ const deleteTask = () => {
       close();
       store.toast = {
         message: "Task deleted successfully",
-        type: toastTypes.SUCCESS,
+        type: TOAST_TYPES.SUCCESS,
         isVisible: true,
       };
     })
@@ -123,7 +122,7 @@ const deleteTask = () => {
       console.error("Error deleting task: ", error);
       store.toast = {
         message: "Error deleting task",
-        type: toastTypes.ERROR,
+        type: TOAST_TYPES.ERROR,
         isVisible: true,
       };
     });
@@ -137,7 +136,7 @@ const close = () => {
 
 const editTask = (id) => {
   router.push({
-    name: RouteNames.ADD_EDIT_FORM,
+    name: ROUTE_NAMES.ADD_EDIT_FORM,
     query: { param: "edit", id: id },
   });
 };
@@ -154,7 +153,7 @@ const updateStage = async (increment) => {
       const store = useStore();
       store.toast = {
         message: "Task Successfully updated.",
-        type: toastTypes.SUCCESS,
+        type: TOAST_TYPES.SUCCESS,
         isVisible: true,
       };
 
@@ -169,7 +168,7 @@ const updateStage = async (increment) => {
       const store = useStore();
       store.toast = {
         message: "Error updating task stage",
-        type: toastTypes.ERROR,
+        type: TOAST_TYPES.ERROR,
         isVisible: true,
       };
     });

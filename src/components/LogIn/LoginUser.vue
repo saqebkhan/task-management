@@ -60,7 +60,7 @@
         </button>
 
         <button
-          @click="router.push(RouteNames.REGISTER)"
+          @click="router.push(ROUTE_NAMES.REGISTER)"
           class="py-2 px-4 bg-gray-200 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 transition-all duration-200"
         >
           Register
@@ -72,13 +72,12 @@
 
 <script setup>
 import CaptchaCheck from "./CaptchaCheck.vue";
-import { RouteNames } from "@/components/enums/routeNames";
+import { ROUTE_NAMES, TOAST_TYPES } from "@/components/utils/constant";
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useStore } from "@/store";
 
 import { ref } from "vue";
-import { toastTypes } from "../enums/toastTypes";
 const email = ref("");
 const password = ref("");
 const errorMessage = ref("");
@@ -95,10 +94,10 @@ const login = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
     .then(() => {
       store.isAuthenticated = true;
-      router.push({ name: RouteNames.DASHBOARD });
+      router.push({ name: ROUTE_NAMES.DASHBOARD });
       store.toast = {
         message: "Successfully logged in",
-        type: toastTypes.SUCCESS,
+        type: TOAST_TYPES.SUCCESS,
         isVisible: true,
       };
     })

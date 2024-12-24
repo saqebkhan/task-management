@@ -12,18 +12,17 @@ import ToastComponent from "./common/ToastComponent.vue";
 import LoadingSpinner from "./common/LoadingSpinner.vue";
 import NavBar from "./NavBar.vue";
 import { useRouter, useRoute } from "vue-router";
-import { RouteNames } from "@/components/enums/routeNames";
-
+import { ROUTE_NAMES } from "@/components/utils/constant";
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
 onMounted(async () => {
-  if (await store.getCurrentUser()) {
-    if (route.name === RouteNames.LOGIN)
-      router.push({ name: RouteNames.DASHBOARD });
-  } else {
-    router.push({ name: RouteNames.LOGIN });
-  }
+  if (route.name === ROUTE_NAMES.LOGIN)
+    if (await store.getCurrentUser()) {
+      router.push({ name: ROUTE_NAMES.DASHBOARD });
+    } else {
+      router.push({ name: ROUTE_NAMES.LOGIN });
+    }
 });
 </script>

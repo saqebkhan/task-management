@@ -14,7 +14,7 @@
       </p>
       <div class="mt-10 flex items-center justify-center gap-x-6">
         <router-link
-          :to="{ name: RouteNames.LOGIN }"
+          :to="{ name: ROUTE_NAMES.LOGIN }"
           class="text-sm font-semibold text-gray-900 cursor-pointer"
           >Back to home <span aria-hidden="true">&rarr;</span></router-link
         >
@@ -24,5 +24,5 @@
 </template>
 
 <script setup>
-import { RouteNames } from "@/router";
+import { ROUTE_NAMES } from "@/router";
 </script>

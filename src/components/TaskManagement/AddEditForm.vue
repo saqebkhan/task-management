@@ -62,7 +62,7 @@
 
         <div class="flex m-2">
           <button
-            @click="$router.push({ name: RouteNames.TASK_MANAGEMENT })"
+            @click="$router.push({ name: ROUTE_NAMES.TASK_MANAGEMENT })"
             class="w-full m-4 py-3 px-4 border-2 border-gray-400 text-gray-800 font-semibold rounded-lg hover:bg-gray-100 hover:border-gray-500 transition-all duration-300"
           >
             Cancel
@@ -83,9 +83,8 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
-import { RouteNames } from "@/components/enums/routeNames";
+import { ROUTE_NAMES, TOAST_TYPES } from "@/components/utils/constant";
 import { useStore } from "@/store";
-import { toastTypes } from "../enums/toastTypes";
 import apiConfig from "../apiConfig";
 
 const todayDate = new Date().toISOString().split("T")[0];
@@ -127,7 +126,7 @@ const loadTaskData = async () => {
   } catch (error) {
     store.toast = {
       message: "Error fetching task details.",
-      type: toastTypes.ERROR,
+      type: TOAST_TYPES.ERROR,
       isVisible: true,
     };
   } finally {
@@ -174,17 +173,17 @@ const submitForm = async () => {
         message: isEdit.value
           ? "Task updated successfully!"
           : "Task created successfully!",
-        type: toastTypes.SUCCESS,
+        type: TOAST_TYPES.SUCCESS,
         isVisible: true,
       };
-      router.push({ name: RouteNames.TASK_MANAGEMENT });
+      router.push({ name: ROUTE_NAMES.TASK_MANAGEMENT });
     }
   } catch (error) {
     store.toast = {
       message: isEdit.value
         ? "Error updating task." + error.response.data.message
         : "Error creating task." + error.response.data.message,
-      type: toastTypes.ERROR,
+      type: TOAST_TYPES.ERROR,
       isVisible: true,
     };
     console.error(error);

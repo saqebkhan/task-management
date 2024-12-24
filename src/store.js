@@ -7,6 +7,7 @@ export const useStore = defineStore({
     isAuthenticated: false,
     isLoading: false,
     userId: null,
+    user: null,
     toast: {
       message: "",
       type: "",
@@ -21,7 +22,10 @@ export const useStore = defineStore({
           (user) => {
             unsubscribe();
             resolve(user);
-            this.userId = user.uid;
+            if (user) {
+              this.user = user;
+              this.userId = user.uid;
+            }
           },
           reject
         );

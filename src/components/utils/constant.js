@@ -1,8 +1,12 @@
-export const RouteNames = {
+export const ROUTE_NAMES = {
   DASHBOARD: "Dashboard",
   ADD_EDIT_FORM: "AddEditForm",
   LOGIN: "Login",
-  NO_ACCESS: "NoAccess",
   REGISTER: "Register",
   TASK_MANAGEMENT: "TaskManagement",
+};
+
+export const TOAST_TYPES = {
+  SUCCESS: "success",
+  ERROR: "error",
 };
