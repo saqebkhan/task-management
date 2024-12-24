@@ -240,6 +240,7 @@ const onDragOver = (event) => {
 
 const onDrop = async (event, newStage) => {
   event.preventDefault();
+  if (!draggedTask) return;
   if (draggedTask.stage !== newStage) {
     // Update the stage locally
     draggedTask.stage = newStage;
@@ -306,6 +307,7 @@ const onDrop = async (event, newStage) => {
     }
   }
   isDragging.value = false;
+  draggedTask = null;
 };
 
 const createTask = () => {
